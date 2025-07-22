@@ -7,7 +7,7 @@ FlightLocations.Core = FlightLocations.Core or {}
 function FlightLocations.Core:Initialize()
     self:RegisterEvents()
     self:InitializeSettings()
-    FlightLocations:Debug("Core module initialized")
+    -- Debug message will be handled by main addon file
 end
 
 function FlightLocations.Core:RegisterEvents()
@@ -72,17 +72,7 @@ function FlightLocations.Core:OnEvent(event, ...)
 end
 
 function FlightLocations.Core:OnAddonLoaded()
-    FlightLocations:Print("Flight Locations addon loaded successfully!")
-    
-    -- Initialize database
-    if FlightLocations.Database then
-        FlightLocations.Database:Initialize()
-    end
-    
-    -- Initialize map integration
-    if FlightLocations.MapIntegration then
-        FlightLocations.MapIntegration:Initialize()
-    end
+    -- Core module loaded - initialization handled by main addon file
 end
 
 function FlightLocations.Core:OnPlayerEnteringWorld()
