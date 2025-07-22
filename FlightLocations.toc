@@ -14,6 +14,9 @@
 # Localization files
 Localization\enUS.lua
 
+# Main addon file (MUST be loaded first to set up namespace)
+FlightLocations.lua
+
 # Core files
 Core\VersionManager.lua
 Core\Database.lua
@@ -23,6 +26,3 @@ Core\MapIntegration.lua
 # UI files  
 UI\MapOverlay.lua
 UI\FlightLocationFrame.lua
-
-# Main addon file
-FlightLocations.lua

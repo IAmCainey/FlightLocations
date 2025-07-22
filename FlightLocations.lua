@@ -66,27 +66,8 @@ function FlightLocations:OnInitialize()
     -- Set up convenience reference
     FlightLocations.db = FlightLocationsDB
     
-    -- Initialize components
-    if FlightLocations.Core then
-        FlightLocations.Core:Initialize()
-    end
-    
-    if FlightLocations.Database then
-        FlightLocations.Database:Initialize()
-    end
-    
-    if FlightLocations.MapIntegration then
-        FlightLocations.MapIntegration:Initialize()
-    end
-    
-    if FlightLocations.UI and FlightLocations.UI.MapOverlay then
-        FlightLocations.UI.MapOverlay:Initialize()
-    end
-    
-    if FlightLocations.UI then
-        FlightLocations.UI:Initialize()
-    end
-    
+    -- Print load message but don't initialize modules yet
+    -- Module initialization will happen in the ADDON_LOADED event
     self:Print("Flight Locations v" .. self.version .. " loaded successfully!")
 end
 
@@ -150,6 +131,8 @@ end
 function FlightLocations:OnEvent(event, ...)
     if event == "ADDON_LOADED" and arg1 == self.name then
         self:OnInitialize()
+        -- Initialize all modules after addon is fully loaded
+        self:InitializeModules()
     elseif event == "TAXIMAP_OPENED" then
         self:OnTaxiMapOpened()
     elseif event == "TAXIMAP_CLOSED" then
@@ -159,6 +142,49 @@ function FlightLocations:OnEvent(event, ...)
     elseif event == "ZONE_CHANGED_NEW_AREA" then
         self:OnZoneChanged()
     end
+end
+
+-- Initialize all modules after addon is fully loaded
+function FlightLocations:InitializeModules()
+    self:Debug("Initializing addon modules...")
+    
+    -- Initialize core components in order
+    if FlightLocations.Database then
+        FlightLocations.Database:Initialize()
+        self:Debug("Database module initialized")
+    else
+        self:Print("WARNING: Database module not found!")
+    end
+    
+    if FlightLocations.Core then
+        FlightLocations.Core:Initialize()
+        self:Debug("Core module initialized")
+    else
+        self:Print("WARNING: Core module not found!")
+    end
+    
+    if FlightLocations.MapIntegration then
+        FlightLocations.MapIntegration:Initialize()
+        self:Debug("MapIntegration module initialized")
+    else
+        self:Print("WARNING: MapIntegration module not found!")
+    end
+    
+    if FlightLocations.UI and FlightLocations.UI.MapOverlay then
+        FlightLocations.UI.MapOverlay:Initialize()
+        self:Debug("UI.MapOverlay module initialized")
+    else
+        self:Print("WARNING: UI.MapOverlay module not found!")
+    end
+    
+    if FlightLocations.UI then
+        FlightLocations.UI:Initialize()
+        self:Debug("UI module initialized")
+    else
+        self:Print("WARNING: UI module not found!")
+    end
+    
+    self:Print("All modules initialized successfully!")
 end
 
 function FlightLocations:OnTaxiMapOpened()
