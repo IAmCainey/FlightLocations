@@ -67,12 +67,20 @@ function FlightLocations:OnInitialize()
     FlightLocations.db = FlightLocationsDB
     
     -- Initialize components
+    if FlightLocations.Core then
+        FlightLocations.Core:Initialize()
+    end
+    
     if FlightLocations.Database then
         FlightLocations.Database:Initialize()
     end
     
     if FlightLocations.MapIntegration then
         FlightLocations.MapIntegration:Initialize()
+    end
+    
+    if FlightLocations.UI and FlightLocations.UI.MapOverlay then
+        FlightLocations.UI.MapOverlay:Initialize()
     end
     
     self:Print("Flight Locations v" .. self.version .. " loaded successfully!")
@@ -251,6 +259,26 @@ function SlashCmdList.FLIGHTLOCATIONS(msg)
         else
             FlightLocations:Print("Changelog not available")
         end
+    elseif command == "test" then
+        -- Test command to verify map integration
+        FlightLocations:Print("Testing map integration...")
+        if FlightLocations.MapIntegration then
+            FlightLocations:Print("MapIntegration module: Available")
+            FlightLocations.MapIntegration:UpdateMapOverlay()
+        else
+            FlightLocations:Print("MapIntegration module: Missing")
+        end
+        if FlightLocations.UI and FlightLocations.UI.MapOverlay then
+            FlightLocations:Print("UI.MapOverlay module: Available")
+        else
+            FlightLocations:Print("UI.MapOverlay module: Missing")
+        end
+        if FlightLocations.Database then
+            local allPoints = FlightLocations.Database:GetAllFlightPoints()
+            FlightLocations:Print("Database: " .. table.getn(allPoints) .. " flight points loaded")
+        else
+            FlightLocations:Print("Database module: Missing")
+        end
     else
         FlightLocations:Print("Flight Locations v" .. FlightLocations.version .. " - Available commands:")
         FlightLocations:Print("/fl toggle - Toggle minimap icons")
@@ -260,6 +288,7 @@ function SlashCmdList.FLIGHTLOCATIONS(msg)
         FlightLocations:Print("/fl stats - Show statistics")
         FlightLocations:Print("/fl version - Show version information")
         FlightLocations:Print("/fl changelog - Show current version changelog")
+        FlightLocations:Print("/fl test - Test addon components")
         FlightLocations:Print("/fl debug - Toggle debug mode")
     end
 end

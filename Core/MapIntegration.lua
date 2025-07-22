@@ -43,6 +43,16 @@ function FlightLocations.MapIntegration:UpdateMapOverlay()
         return
     end
     
+    -- Use the UI MapOverlay if available, otherwise fall back to our implementation
+    if FlightLocations.UI and FlightLocations.UI.MapOverlay then
+        FlightLocations.UI.MapOverlay:UpdateOverlay()
+    else
+        -- Fallback implementation
+        self:UpdateMapOverlayDirect()
+    end
+end
+
+function FlightLocations.MapIntegration:UpdateMapOverlayDirect()
     -- Clear existing icons
     self:ClearMapIcons()
     

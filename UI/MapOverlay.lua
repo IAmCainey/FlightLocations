@@ -1,6 +1,7 @@
 -- Map Overlay UI for Flight Locations
 -- Handles the visual representation of flight points on maps
 
+FlightLocations.UI = FlightLocations.UI or {}
 FlightLocations.UI.MapOverlay = {}
 
 -- Icon pool for efficient memory management

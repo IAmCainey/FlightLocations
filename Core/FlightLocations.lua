@@ -21,8 +21,17 @@ function FlightLocations.Core:RegisterEvents()
         "WORLD_MAP_UPDATE"
     }
     
+    -- Create frame if it doesn't exist
+    if not self.eventFrame then
+        self.eventFrame = CreateFrame("Frame", "FlightLocationsCoreFrame")
+        self.eventFrame:SetScript("OnEvent", function()
+            self:OnEvent(event, arg1, arg2, arg3, arg4, arg5)
+        end)
+    end
+    
+    -- Register events
     for _, event in ipairs(events) do
-        self:RegisterEvent(event)
+        self.eventFrame:RegisterEvent(event)
     end
 end
 
