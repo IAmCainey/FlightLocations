@@ -145,14 +145,7 @@ function FlightLocations:IsVersionNewer(version1, version2)
     return false
 end
 
--- Event handling
-function FlightLocations:OnEnable()
-    self:RegisterEvent("ADDON_LOADED")
-    self:RegisterEvent("TAXIMAP_OPENED")
-    self:RegisterEvent("TAXIMAP_CLOSED")
-    self:RegisterEvent("PLAYER_ENTERING_WORLD")
-    self:RegisterEvent("ZONE_CHANGED_NEW_AREA")
-end
+-- Event handling functions
 
 function FlightLocations:OnEvent(event, ...)
     if event == "ADDON_LOADED" and arg1 == self.name then
@@ -310,5 +303,4 @@ frame:RegisterEvent("TAXIMAP_CLOSED")
 frame:RegisterEvent("PLAYER_ENTERING_WORLD")
 frame:RegisterEvent("ZONE_CHANGED_NEW_AREA")
 
--- Enable the addon
-FlightLocations:OnEnable()
+-- Addon is ready - events are registered above
