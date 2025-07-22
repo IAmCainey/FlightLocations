@@ -63,7 +63,8 @@ function FlightLocations:OnInitialize()
         end
     end
     
-    self.db = FlightLocationsDB
+    -- Set up convenience reference
+    FlightLocations.db = FlightLocationsDB
     
     -- Initialize components
     if FlightLocations.Database then
@@ -186,7 +187,7 @@ function FlightLocations:Print(msg)
 end
 
 function FlightLocations:Debug(msg)
-    if self.db and self.db.debugMode then
+    if FlightLocationsDB and FlightLocationsDB.debugMode then
         self:Print("|cffff0000[DEBUG]|r " .. msg)
     end
 end
@@ -196,29 +197,35 @@ SLASH_FLIGHTLOCATIONS1 = "/flightlocations"
 SLASH_FLIGHTLOCATIONS2 = "/fl"
 
 function SlashCmdList.FLIGHTLOCATIONS(msg)
+    -- Safety check to ensure addon is initialized
+    if not FlightLocationsDB then
+        FlightLocations:Print("Addon not yet initialized. Please wait...")
+        return
+    end
+    
     local command = string.lower(msg or "")
     
     if command == "toggle" then
-        FlightLocations.db.enableMinimap = not FlightLocations.db.enableMinimap
-        FlightLocations:Print("Minimap icons " .. (FlightLocations.db.enableMinimap and "enabled" or "disabled"))
+        FlightLocationsDB.enableMinimap = not FlightLocationsDB.enableMinimap
+        FlightLocations:Print("Minimap icons " .. (FlightLocationsDB.enableMinimap and "enabled" or "disabled"))
         if FlightLocations.MapIntegration then
             FlightLocations.MapIntegration:UpdateMapOverlay()
         end
     elseif command == "undiscovered" then
-        FlightLocations.db.showUndiscovered = not FlightLocations.db.showUndiscovered
-        FlightLocations:Print("Undiscovered flight points " .. (FlightLocations.db.showUndiscovered and "shown" or "hidden"))
+        FlightLocationsDB.showUndiscovered = not FlightLocationsDB.showUndiscovered
+        FlightLocations:Print("Undiscovered flight points " .. (FlightLocationsDB.showUndiscovered and "shown" or "hidden"))
         if FlightLocations.MapIntegration then
             FlightLocations.MapIntegration:UpdateMapOverlay()
         end
     elseif command == "discovered" then
-        FlightLocations.db.showDiscovered = not FlightLocations.db.showDiscovered
-        FlightLocations:Print("Discovered flight points " .. (FlightLocations.db.showDiscovered and "shown" or "hidden"))
+        FlightLocationsDB.showDiscovered = not FlightLocationsDB.showDiscovered
+        FlightLocations:Print("Discovered flight points " .. (FlightLocationsDB.showDiscovered and "shown" or "hidden"))
         if FlightLocations.MapIntegration then
             FlightLocations.MapIntegration:UpdateMapOverlay()
         end
     elseif command == "debug" then
-        FlightLocations.db.debugMode = not FlightLocations.db.debugMode
-        FlightLocations:Print("Debug mode " .. (FlightLocations.db.debugMode and "enabled" or "disabled"))
+        FlightLocationsDB.debugMode = not FlightLocationsDB.debugMode
+        FlightLocations:Print("Debug mode " .. (FlightLocationsDB.debugMode and "enabled" or "disabled"))
     elseif command == "config" then
         if FlightLocations.UI and FlightLocations.UI.ToggleConfigFrame then
             FlightLocations.UI:ToggleConfigFrame()
@@ -262,6 +269,13 @@ local frame = CreateFrame("Frame")
 frame:SetScript("OnEvent", function()
     FlightLocations:OnEvent(event, arg1, arg2, arg3, arg4, arg5)
 end)
+
+-- Register the events we need
+frame:RegisterEvent("ADDON_LOADED")
+frame:RegisterEvent("TAXIMAP_OPENED")
+frame:RegisterEvent("TAXIMAP_CLOSED")
+frame:RegisterEvent("PLAYER_ENTERING_WORLD")
+frame:RegisterEvent("ZONE_CHANGED_NEW_AREA")
 
 -- Enable the addon
 FlightLocations:OnEnable()
