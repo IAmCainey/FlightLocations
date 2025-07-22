@@ -1,0 +1,42 @@
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Windows
+*.lnk
+
+# Development files
+*.tmp
+*.bak
+*.swp
+*~.nib
+*.sublime-project
+*.sublime-workspace
+
+# Build artifacts
+build/
+dist/
+release/
+*.zip
+
+# IDE files
+.vscode/
+.idea/
+*.iml
+
+# Log files
+*.log
+
+# Backup files created by build scripts
+FlightLocations-*/
+
+# Local configuration (if any)
+config.local.lua
+
+# Git
+.git/

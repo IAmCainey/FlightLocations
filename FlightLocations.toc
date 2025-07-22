@@ -1,0 +1,28 @@
+## Interface: 11200
+## Title: Flight Locations
+## Notes: Shows all flight locations on the map, both discovered and undiscovered for Turtle WoW
+## Author: IAmCainey
+## Version: 1.0.0
+## X-Category: Map
+## X-Website: https://github.com/IAmCainey/FlightLocations
+## X-Curse-Project-ID: 
+## X-WoWI-ID: 
+## X-Wago-ID: 
+## SavedVariables: FlightLocationsDB
+## DefaultState: enabled
+
+# Localization files
+Localization\enUS.lua
+
+# Core files
+Core\VersionManager.lua
+Core\Database.lua
+Core\FlightLocations.lua
+Core\MapIntegration.lua
+
+# UI files  
+UI\MapOverlay.lua
+UI\FlightLocationFrame.lua
+
+# Main addon file
+FlightLocations.lua
