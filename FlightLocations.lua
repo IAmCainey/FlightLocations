@@ -83,6 +83,10 @@ function FlightLocations:OnInitialize()
         FlightLocations.UI.MapOverlay:Initialize()
     end
     
+    if FlightLocations.UI then
+        FlightLocations.UI:Initialize()
+    end
+    
     self:Print("Flight Locations v" .. self.version .. " loaded successfully!")
 end
 
