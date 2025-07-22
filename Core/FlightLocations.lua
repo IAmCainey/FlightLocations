@@ -5,11 +5,13 @@ FlightLocations.Core = FlightLocations.Core or {}
 
 -- Event handlers and core functionality
 function FlightLocations.Core:Initialize()
-    self:RegisterEvents()
     self:InitializeSettings()
-    -- Debug message will be handled by main addon file
+    -- Event registration is handled by main addon file to avoid conflicts
 end
 
+--[[
+-- Note: Event registration is handled by main FlightLocations.lua file
+-- This function is disabled to prevent conflicts
 function FlightLocations.Core:RegisterEvents()
     -- Register for relevant WoW events
     local events = {
@@ -34,6 +36,7 @@ function FlightLocations.Core:RegisterEvents()
         self.eventFrame:RegisterEvent(event)
     end
 end
+--]]
 
 function FlightLocations.Core:InitializeSettings()
     -- Initialize default settings if they don't exist
@@ -55,6 +58,9 @@ function FlightLocations.Core:InitializeSettings()
     end
 end
 
+--[[
+-- Note: Event handling is done by main FlightLocations.lua file
+-- This function is disabled to prevent conflicts
 function FlightLocations.Core:OnEvent(event, ...)
     if event == "ADDON_LOADED" and arg1 == "FlightLocations" then
         self:OnAddonLoaded()
@@ -70,6 +76,7 @@ function FlightLocations.Core:OnEvent(event, ...)
         self:OnWorldMapUpdate()
     end
 end
+--]]
 
 function FlightLocations.Core:OnAddonLoaded()
     -- Core module loaded - initialization handled by main addon file
